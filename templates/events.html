@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Voting Events</h2>
+
+    <!-- Active Events -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h3 class="h5 mb-0">Active Events</h3>
+        </div>
+        <div class="card-body">
+            {% if active_events %}
+                <div class="row">
+                    {% for event in active_events %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ event.name }}</h5>
+                                    <p class="card-text">{{ event.description }}</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            Ends: {{ event.end_date.strftime('%Y-%m-%d %H:%M') }}
+                                        </small>
+                                    </p>
+                                    <a href="{{ url_for('view_event', event_id=event.id) }}" 
+                                       class="btn btn-primary">Vote Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">No active events at the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Upcoming Events -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h3 class="h5 mb-0">Upcoming Events</h3>
+        </div>
+        <div class="card-body">
+            {% if upcoming_events %}
+                <div class="row">
+                    {% for event in upcoming_events %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ event.name }}</h5>
+                                    <p class="card-text">{{ event.description }}</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            Starts: {{ event.start_date.strftime('%Y-%m-%d %H:%M') }}
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">No upcoming events.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Past Events -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h3 class="h5 mb-0">Past Events</h3>
+        </div>
+        <div class="card-body">
+            {% if past_events %}
+                <div class="row">
+                    {% for event in past_events %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ event.name }}</h5>
+                                    <p class="card-text">{{ event.description }}</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            Ended: {{ event.end_date.strftime('%Y-%m-%d %H:%M') }}
+                                        </small>
+                                    </p>
+                                    <a href="{{ url_for('event_results', event_id=event.id) }}" 
+                                       class="btn btn-secondary">View Results</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">No past events.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

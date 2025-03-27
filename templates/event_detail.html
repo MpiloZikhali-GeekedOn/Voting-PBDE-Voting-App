@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{{ event.name }}</h2>
+    <p>{{ event.description }}</p>
+    <p>
+        <small class="text-muted">
+            Starts: {{ event.start_date.strftime('%Y-%m-%d %H:%M') }}<br>
+            Ends: {{ event.end_date.strftime('%Y-%m-%d %H:%M') }}
+        </small>
+    </p>
+
+    {% if is_active %}
+        <h3 class="h5 mb-4">Candidates</h3>
+        <div class="row">
+            {% for candidate in candidates %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        {% if candidate.image_url %}
+                            <img src="{{ url_for('static', filename='uploads/' + candidate.image_url) }}" 
+                                 class="card-img-top" 
+                                 alt="{{ candidate.name }}"
+                                 style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                                 style="height: 200px;">
+                                <i class="fas fa-user-circle fa-5x text-muted"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ candidate.name }}</h5>
+                            <div class="mb-3">
+                                <span class="badge bg-primary">{{ candidate.position }}</span>
+                                <span class="badge bg-secondary">{{ candidate.department }}</span>
+                                <span class="badge bg-info">{{ candidate.political_party }}</span>
+                            </div>
+                            <p class="card-text">{{ candidate.contribution }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    {% if candidate_votes[candidate.id] %}
+                                        <small>Votes: {{ candidate_votes[candidate.id].count }} 
+                                        ({{ candidate_votes[candidate.id].percentage }}%)</small>
+                                    {% else %}
+                                        <small>No votes yet</small>
+                                    {% endif %}
+                                </div>
+                                <form action="{{ url_for('vote', event_id=event.id, candidate_id=candidate.id) }}" method="post">
+                                    <button type="submit" 
+                                            class="btn btn-primary" 
+                                            {% if user_vote %}disabled{% endif %}>
+                                        {% if user_vote %}
+                                            Voted
+                                        {% else %}
+                                            Vote
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">This event is not currently active.</p>
+    {% endif %}
+</div>
+
+<style>
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.badge {
+    margin-right: 5px;
+    font-size: 0.9em;
+}
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+.card-text {
+    color: #666;
+    margin-bottom: 1rem;
+}
+.btn-primary {
+    padding: 0.5rem 1.5rem;
+}
+</style>
+{% endblock %}

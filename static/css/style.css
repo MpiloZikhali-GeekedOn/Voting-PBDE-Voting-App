@@ -1,0 +1,271 @@
+/* General Styles */
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 2rem;
+}
+
+/* Card Styles */
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0,0,0,0.125);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Progress Bar Styles */
+.progress {
+    height: 25px;
+    margin: 10px 0;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    transition: width 0.6s ease;
+}
+
+/* Progress bar width based on data-width attribute */
+[data-width="0"] { width: 0%; }
+[data-width="1"] { width: 1%; }
+[data-width="2"] { width: 2%; }
+[data-width="3"] { width: 3%; }
+[data-width="4"] { width: 4%; }
+[data-width="5"] { width: 5%; }
+[data-width="10"] { width: 10%; }
+[data-width="15"] { width: 15%; }
+[data-width="20"] { width: 20%; }
+[data-width="25"] { width: 25%; }
+[data-width="30"] { width: 30%; }
+[data-width="35"] { width: 35%; }
+[data-width="40"] { width: 40%; }
+[data-width="45"] { width: 45%; }
+[data-width="50"] { width: 50%; }
+[data-width="55"] { width: 55%; }
+[data-width="60"] { width: 60%; }
+[data-width="65"] { width: 65%; }
+[data-width="70"] { width: 70%; }
+[data-width="75"] { width: 75%; }
+[data-width="80"] { width: 80%; }
+[data-width="85"] { width: 85%; }
+[data-width="90"] { width: 90%; }
+[data-width="95"] { width: 95%; }
+[data-width="100"] { width: 100%; }
+
+.progress-bar span {
+    color: white;
+    font-size: 0.875rem;
+}
+
+/* Alert Styles */
+.alert {
+    margin-bottom: 1rem;
+}
+
+.alert-info {
+    color: #055160;
+    background-color: #cff4fc;
+    border-color: #b6effb;
+}
+
+.alert-warning {
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+/* Text Styles */
+.text-muted {
+    color: #6c757d !important;
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+/* Voting Events */
+.event-card {
+    transition: transform 0.2s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+}
+
+.candidate-card {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.candidate-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Results Page */
+.results-container {
+    padding: 2rem 0;
+}
+
+.results-container .card {
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.results-container .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.results-container .badge {
+    margin-right: 5px;
+    font-size: 0.9em;
+}
+
+.results-container .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.results-container .card-text {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.results-container .winner-badge .badge {
+    font-size: 1.1em;
+    padding: 0.5em 1em;
+}
+
+.results-container .progress {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+}
+
+.results-container .progress-bar {
+    transition: width 1s ease-in-out;
+}
+
+.results-container .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.results-container .vote-results {
+    margin-bottom: 1rem;
+}
+
+.results-container .vote-results h6 {
+    margin-bottom: 0;
+}
+
+.results-container .vote-results .h5 {
+    margin-bottom: 0;
+}
+
+/* Forms */
+.form-control {
+    margin-bottom: 1rem;
+}
+
+.form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.d-grid {
+    gap: 0.5rem;
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #0d6efd !important;
+}
+
+/* Footer */
+footer {
+    margin-top: 3rem;
+    padding: 2rem 0;
+    background-color: #343a40;
+    color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        margin-top: 1rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .progress {
+        height: 20px;
+    }
+    
+    .progress-bar span {
+        font-size: 0.75rem;
+    }
+    
+    .card-img-top {
+        height: 150px;
+    }
+    
+    .results-container .card-img-top {
+        height: 150px;
+    }
+    
+    .results-container .winner-badge .badge {
+        font-size: 1em;
+        padding: 0.4em 0.8em;
+    }
+} 

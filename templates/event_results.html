@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container results-container">
+    <h2 class="mb-4">Election Results</h2>
+    
+    {% if event %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 class="card-title">{{ event.title }}</h3>
+                <p class="card-text">
+                    <span class="badge bg-info">{{ event.status }}</span>
+                    <span class="badge bg-secondary">{{ event.start_date.strftime('%Y-%m-%d %H:%M') }} - {{ event.end_date.strftime('%Y-%m-%d %H:%M') }}</span>
+                </p>
+            </div>
+        </div>
+
+        {% for position in positions %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">{{ position.title }}</h4>
+                    <p class="card-text">{{ position.description }}</p>
+                    
+                    {% for candidate in position.candidates %}
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="{{ candidate.image_url }}" class="card-img-top" alt="{{ candidate.name }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="card-title mb-0">{{ candidate.name }}</h5>
+                                            {% if candidate == position.winner %}
+                                                <span class="badge bg-success winner-badge">Winner</span>
+                                            {% endif %}
+                                        </div>
+                                        <p class="card-text">{{ candidate.bio }}</p>
+                                        <div class="vote-results">
+                                            <h6>Votes</h6>
+                                            <div class="h5">{{ candidate.vote_count }}</div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" role="progressbar" 
+                                                     style="width: {{ (candidate.vote_count / position.total_votes * 100) if position.total_votes > 0 else 0 }}%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            No event found or event has not ended yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

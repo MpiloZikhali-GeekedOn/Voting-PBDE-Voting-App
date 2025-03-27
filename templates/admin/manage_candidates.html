@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Manage Candidates</h2>
+    
+    <!-- Add New Candidate Form -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Add New Candidate</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <input type="text" class="form-control" id="department" name="department" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="position">Position</label>
+                            <select class="form-control" id="position" name="position" required>
+                                <option value="President">President</option>
+                                <option value="Vice">Vice President</option>
+                                <option value="Treasurer">Treasurer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="political_party">Political Party</label>
+                            <input type="text" class="form-control" id="political_party" name="political_party" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="contribution">Contribution/Platform</label>
+                    <textarea class="form-control" id="contribution" name="contribution" rows="3" required></textarea>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="image">Profile Image</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Add Candidate</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Candidates List -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Current Candidates</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Position</th>
+                            <th>Political Party</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for candidate in candidates %}
+                        <tr>
+                            <td>
+                                {% if candidate.image_url %}
+                                <img src="{{ url_for('static', filename='uploads/' + candidate.image_url) }}" 
+                                     alt="{{ candidate.name }}" 
+                                     class="img-thumbnail" 
+                                     style="max-width: 50px;">
+                                {% else %}
+                                <img src="{{ url_for('static', filename='images/default-avatar.png') }}" 
+                                     alt="Default" 
+                                     class="img-thumbnail" 
+                                     style="max-width: 50px;">
+                                {% endif %}
+                            </td>
+                            <td>{{ candidate.name }}</td>
+                            <td>{{ candidate.department }}</td>
+                            <td>{{ candidate.position }}</td>
+                            <td>{{ candidate.political_party }}</td>
+                            <td>
+                                {% if candidate.user.status == 'approved' %}
+                                <span class="badge bg-success">Approved</span>
+                                {% elif candidate.user.status == 'pending' %}
+                                <span class="badge bg-warning">Pending</span>
+                                {% else %}
+                                <span class="badge bg-danger">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button type="button" 
+                                        class="btn btn-sm btn-primary" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#editModal{{ candidate.id }}">
+                                    Edit
+                                </button>
+                                <form method="POST" action="{{ url_for('delete_candidate', candidate_id=candidate.id) }}" 
+                                      class="d-inline" 
+                                      onsubmit="return confirm('Are you sure you want to delete this candidate?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editModal{{ candidate.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Candidate</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="POST" enctype="multipart/form-data">
+                                            <input type="hidden" name="candidate_id" value="{{ candidate.id }}">
+                                            <div class="form-group">
+                                                <label for="name{{ candidate.id }}">Name</label>
+                                                <input type="text" class="form-control" id="name{{ candidate.id }}" 
+                                                       name="name" value="{{ candidate.name }}" required>
+                                            </div>
+                                            <div class="form-group mt-3">
+                                                <label for="department{{ candidate.id }}">Department</label>
+                                                <input type="text" class="form-control" id="department{{ candidate.id }}" 
+                                                       name="department" value="{{ candidate.department }}" required>
+                                            </div>
+                                            <div class="form-group mt-3">
+                                                <label for="position{{ candidate.id }}">Position</label>
+                                                <select class="form-control" id="position{{ candidate.id }}" 
+                                                        name="position" required>
+                                                    <option value="President" {% if candidate.position == 'President' %}selected{% endif %}>President</option>
+                                                    <option value="Vice" {% if candidate.position == 'Vice' %}selected{% endif %}>Vice President</option>
+                                                    <option value="Treasurer" {% if candidate.position == 'Treasurer' %}selected{% endif %}>Treasurer</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group mt-3">
+                                                <label for="political_party{{ candidate.id }}">Political Party</label>
+                                                <input type="text" class="form-control" id="political_party{{ candidate.id }}" 
+                                                       name="political_party" value="{{ candidate.political_party }}" required>
+                                            </div>
+                                            <div class="form-group mt-3">
+                                                <label for="contribution{{ candidate.id }}">Contribution/Platform</label>
+                                                <textarea class="form-control" id="contribution{{ candidate.id }}" 
+                                                          name="contribution" rows="3" required>{{ candidate.contribution }}</textarea>
+                                            </div>
+                                            <div class="form-group mt-3">
+                                                <label for="image{{ candidate.id }}">Profile Image</label>
+                                                <input type="file" class="form-control" id="image{{ candidate.id }}" 
+                                                       name="image" accept="image/*">
+                                                {% if candidate.image_url %}
+                                                <small class="text-muted">Current image: {{ candidate.image_url }}</small>
+                                                {% endif %}
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mt-3">Update Candidate</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

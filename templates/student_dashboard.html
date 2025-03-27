@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h4 mb-0">Student Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    {% if current_user.role == 'candidate' %}
+                        <div class="alert {% if current_user.status == 'pending' %}alert-warning{% elif current_user.status == 'approved' %}alert-success{% else %}alert-danger{% endif %}">
+                            <h4 class="alert-heading">Candidate Status</h4>
+                            <p class="mb-0">
+                                Your application status is: 
+                                <strong>{{ current_user.status|title }}</strong>
+                            </p>
+                        </div>
+
+                        {% if current_user.status == 'pending' %}
+                            <div class="alert alert-info">
+                                <p class="mb-0">
+                                    Your application is currently under review. Please check back later for updates.
+                                </p>
+                            </div>
+                        {% elif current_user.status == 'approved' %}
+                            <div class="alert alert-success">
+                                <p class="mb-0">
+                                    Congratulations! Your application has been approved. You can now view events and results.
+                                </p>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger">
+                                <p class="mb-0">
+                                    Your application has been rejected. If you believe this is a mistake, please contact the administrator.
+                                </p>
+                            </div>
+                        {% endif %}
+
+                        {% if current_user.status == 'approved' %}
+                            <div class="mt-4">
+                                <h3 class="h5 mb-3">Active Events</h3>
+                                {% if active_events %}
+                                    <div class="row">
+                                        {% for event in active_events %}
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card h-100">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ event.name }}</h5>
+                                                        <p class="card-text">{{ event.description }}</p>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">
+                                                                Ends: {{ event.end_date.strftime('%Y-%m-%d %H:%M') }}
+                                                            </small>
+                                                        </p>
+                                                        <a href="{{ url_for('view_event', event_id=event.id) }}" 
+                                                           class="btn btn-info">View Event</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted">No active events at the moment.</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="mt-4">
+                                <h3 class="h5 mb-3">Past Events</h3>
+                                {% if past_events %}
+                                    <div class="row">
+                                        {% for event in past_events %}
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card h-100">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ event.name }}</h5>
+                                                        <p class="card-text">{{ event.description }}</p>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">
+                                                                Ended: {{ event.end_date.strftime('%Y-%m-%d %H:%M') }}
+                                                            </small>
+                                                        </p>
+                                                        <a href="{{ url_for('event_results', event_id=event.id) }}" 
+                                                           class="btn btn-primary">View Results</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted">No past events available.</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="alert alert-info">
+                            <p class="mb-0">
+                                Welcome to your student dashboard. You can view and participate in voting events.
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    <div class="mt-4">
+                        <h3 class="h5 mb-3">Quick Actions</h3>
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('view_events') }}" class="btn btn-primary">
+                                View All Events
+                            </a>
+                            <a href="{{ url_for('profile') }}" class="btn btn-secondary">
+                                Edit Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Manage Candidate Applications</h2>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="h5 mb-0">Pending Applications</h3>
+        </div>
+        <div class="card-body">
+            {% if pending_applications %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Student Number</th>
+                                <th>Email</th>
+                                <th>Registration Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in pending_applications %}
+                                <tr>
+                                    <td>{{ application.name }}</td>
+                                    <td>{{ application.student_number }}</td>
+                                    <td>{{ application.email }}</td>
+                                    <td>{{ application.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    <td>
+                                        <form method="POST" action="{{ url_for('update_application_status', user_id=application.id) }}" class="d-inline">
+                                            <input type="hidden" name="status" value="approved">
+                                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                        </form>
+                                        <form method="POST" action="{{ url_for('update_application_status', user_id=application.id) }}" class="d-inline">
+                                            <input type="hidden" name="status" value="rejected">
+                                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No pending applications.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h3 class="h5 mb-0">Processed Applications</h3>
+        </div>
+        <div class="card-body">
+            {% if processed_applications %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Student Number</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Registration Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in processed_applications %}
+                                <tr>
+                                    <td>{{ application.name }}</td>
+                                    <td>{{ application.student_number }}</td>
+                                    <td>{{ application.email }}</td>
+                                    <td>
+                                        <span class="badge {% if application.status == 'approved' %}bg-success{% else %}bg-danger{% endif %}">
+                                            {{ application.status|title }}
+                                        </span>
+                                    </td>
+                                    <td>{{ application.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No processed applications.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
