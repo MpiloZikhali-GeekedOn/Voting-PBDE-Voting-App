@@ -205,11 +205,9 @@ def update_events():
 
 @app.route('/')
 def index():
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
-    if session.get('role') == 'admin':
-        return redirect(url_for('admin_dashboard'))
-    return redirect(url_for('view_events'))
+    return render_template('index.html')
+
+
 
 @app.route('/menu')
 @login_required
